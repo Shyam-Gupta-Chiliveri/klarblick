@@ -2,8 +2,8 @@
 
 Patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub challenge.
 
-Public repository: [Leclarbic](https://github.com/Shyam-Gupta-Chiliveri/Leclarbic)  
-Public website: [https://shyam-gupta-chiliveri.github.io/Leclarbic/](https://shyam-gupta-chiliveri.github.io/Leclarbic/)
+Public repository: [Klarblick (AI Hackathon)](https://github.com/Shyam-Gupta-Chiliveri/klarblick)  
+Public website: [https://shyam-gupta-chiliveri.github.io/klarblick/](https://shyam-gupta-chiliveri.github.io/klarblick/)
 
 **No medical advice.** Every date, dose and phone number must come from the letter. Inference is designed for [TrustedTokens](https://trustedtokens.eu/docs/) in the EU (or another OpenAI-compatible endpoint in `.env.local`).
 
