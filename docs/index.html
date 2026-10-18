@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Klarblick — Ihr Arztbrief. In Ruhe verstanden.</title>
+  <meta name="description" content="Klarblick (Leclarbic): patient-facing translator for German discharge letters. CGM / WHU Innovation Career Hub. No medical advice. Live LLM demo runs locally — GitHub Pages cannot host the Next.js API.">
+  <link rel="canonical" href="https://shyam-gupta-chiliveri.github.io/Leclarbic/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Klarblick — Ihr Arztbrief. In Ruhe verstanden.">
+  <meta property="og:description" content="CGM discharge-letter explainer. Worry compass, deadlines, medicines — only what the letter says. Source on GitHub as Leclarbic.">
+  <meta property="og:url" content="https://shyam-gupta-chiliveri.github.io/Leclarbic/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,560;1,9..144,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #efe8dc;
+      --ink: #1c1814;
+      --muted: #6a6358;
+      --paper: #fffdf8;
+      --line: #ddd2c2;
+      --accent: #8f3f24;
+      --calm: #2f3a34;
+      --calm-soft: #eef1eb;
+      --amber: #8a4b12;
+      --amber-soft: #f6ead7;
+      --alarm: #7f2a22;
+      --alarm-soft: #f6e4df;
+      --serif: "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
+      --sans: "Source Sans 3", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 0% -10%, #f6ead3 0%, transparent 52%),
+        radial-gradient(ellipse 70% 45% at 100% 0%, #e4dfd2 0%, transparent 48%),
+        var(--bg);
+      color: var(--ink);
+      font: 18px/1.5 var(--sans);
+    }
+    a { color: inherit; }
+    .banner {
+      background: var(--ink);
+      color: #f4ece1;
+      text-align: center;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.86rem;
+    }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 72px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-end;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .kicker {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 560;
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      margin: 0;
+      letter-spacing: -0.035em;
+      line-height: 0.92;
+    }
+    .brand p { margin: 10px 0 0; color: var(--muted); max-width: 36ch; }
+    .tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      padding: 0.5rem 0.95rem;
+      min-height: 44px;
+      font: 700 0.92rem var(--sans);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+    .lang-switch button.on { background: var(--ink); color: #f6efe4; }
+    .hero {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.6rem 1.5rem 1.7rem;
+      box-shadow: 0 22px 56px rgba(40, 28, 12, 0.08);
+    }
+    .hero h2 {
+      font-family: var(--serif);
+      font-weight: 560;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: -0.03em;
+      margin: 0 0 0.6rem;
+      line-height: 1.05;
+    }
+    .lead { margin: 0 0 1.2rem; max-width: 46rem; color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .btn {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.05rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .primary { background: var(--ink); color: #f6efe4; }
+    .ghost { border: 1px solid var(--line); background: #fff; }
+    .note {
+      margin: 1.15rem 0 0;
+      padding: 0.85rem 1rem;
+      background: var(--amber-soft);
+      border: 1px solid #e6d3b2;
+      border-radius: 10px;
+      color: var(--amber);
+      font-size: 0.95rem;
+    }
+    .note code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #efe6d8;
+      padding: 0.08rem 0.35rem;
+      border-radius: 5px;
+      color: var(--ink);
+    }
+    section { margin-top: 2.4rem; }
+    h3 {
+      font-family: var(--serif);
+      font-weight: 560;
+      font-size: 1.7rem;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.85rem;
+    }
+    .grid { display: grid; gap: 0.75rem; }
+    .grid4 { grid-template-columns: repeat(4, 1fr); }
+    .grid3 { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.05rem 1.1rem;
+    }
+    .card b { display: block; margin-bottom: 0.3rem; }
+    .num { color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; }
+    .worry, .far { display: grid; gap: 0.75rem; grid-template-columns: 1.1fr 0.9fr; }
+    .chip {
+      display: inline-block;
+      background: var(--calm-soft);
+      color: var(--calm);
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.55rem;
+    }
+    .chip.warn { background: var(--alarm-soft); color: var(--alarm); }
+    .chip.soon { background: var(--amber-soft); color: var(--amber); }
+    ol.steps { margin: 0; padding-left: 1.15rem; color: var(--muted); }
+    ol.steps li { margin: 0.35rem 0; }
+    pre {
+      margin: 0;
+      background: #1c1814;
+      color: #f4ece1;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      overflow: auto;
+      font: 0.9rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    footer {
+      margin-top: 2.6rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    footer a { font-weight: 700; }
+    @media (max-width: 800px) {
+      .grid4, .grid3, .worry, .far { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner" data-i="safety">Kein medizinischer Rat. Nur was im Brief steht — in der EU gerechnet.</div>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <p class="kicker" data-i="kicker">CGM Challenge · Gesundheitskompetenz</p>
+        <h1>Klarblick</h1>
+        <p data-i="tagline">Ihr Arztbrief. In Ruhe verstanden.</p>
+      </div>
+      <div class="tools">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" id="de" class="on" aria-pressed="true">DE</button>
+          <button type="button" id="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h2 data-i="hero">Erst verstehen. Dann handeln.</h2>
+        <p class="lead" data-i="lead">Patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub. This GitHub Pages site is the public desk. The interactive Next.js app — including <code>/api/analyze</code> — runs on your machine.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/Shyam-Gupta-Chiliveri/Leclarbic" data-i="repo">Open the Leclarbic repository</a>
+          <a class="btn ghost" href="#run" data-i="run">Run the live demo locally</a>
+        </div>
+        <p class="note" data-i="pagesNote">GitHub Pages is static hosting. It cannot run Node API routes or keep TrustedTokens / OpenAI keys. Clone the repo, add <code>.env.local</code> on your computer, then <code>npm run dev</code>.</p>
+      </section>
+
+      <section>
+        <h3 data-i="jury">What the jury sees</h3>
+        <div class="grid grid4">
+          <article class="card"><span class="num">01</span><b data-i="j1t">Open the letter</b><span data-i="j1b">PDF, photo, or a CGM sample.</span></article>
+          <article class="card"><span class="num">02</span><b data-i="j2t">Worry compass</b><span data-i="j2b">Follow-up urgency — not how sick someone is.</span></article>
+          <article class="card"><span class="num">03</span><b data-i="j3t">FAR</b><span data-i="j3b">Deadlines, actions, and what happens if you wait.</span></article>
+          <article class="card"><span class="num">04</span><b data-i="j4t">Then the rest</b><span data-i="j4b">Plain summary, quotes, FAQ, grounded chat. DE / EN.</span></article>
+        </div>
+      </section>
+
+      <section>
+        <h3 data-i="preview">A calm first screen</h3>
+        <div class="worry">
+          <article class="card">
+            <span class="chip soon" data-i="worryChip">Soon — not an emergency</span>
+            <b data-i="worryTitle">Should I worry?</b>
+            <span data-i="worryBody">The compass answers follow-up urgency from the letter only. Dates, doses and phone numbers are copied, never invented.</span>
+          </article>
+          <article class="card">
+            <span class="chip" data-i="aboutChip">One sentence</span>
+            <b data-i="aboutTitle">What the letter is about</b>
+            <span data-i="aboutBody">A short plain-language line, then Fristen · Aufgaben · Risiken — including decline/object if the letter allows it.</span>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h3 data-i="who">Who this is for</h3>
+        <div class="grid grid3">
+          <article class="card"><b data-i="w1t">Whoever holds the letter</b><span data-i="w1b">Patient, partner, neighbour, carer — even without medical German.</span></article>
+          <article class="card"><b data-i="w2t">Insurers after § 39 SGB V</b><span data-i="w2b">A digital Nachsorge service launched from CGM hospital software.</span></article>
+          <article class="card"><b data-i="w3t">Not a doctor</b><span data-i="w3b">Klarblick explains the letter. It does not treat. Emergency: the ER or the contact in the letter.</span></article>
+        </div>
+      </section>
+
+      <section id="run">
+        <h3 data-i="local">Run Klarblick locally</h3>
+        <div class="far">
+          <pre>git clone https://github.com/Shyam-Gupta-Chiliveri/Leclarbic.git
+cd Leclarbic
+cp .env.example .env.local   # paste your own key
+npm install
+npm run dev</pre>
+          <article class="card">
+            <b data-i="keysTitle">Keys stay on your machine</b>
+            <ol class="steps">
+              <li data-i="k1">Never commit <code>.env.local</code>.</li>
+              <li data-i="k2">TrustedTokens (EU) or another OpenAI-compatible endpoint.</li>
+              <li data-i="k3">Then open <code>http://localhost:3000</code>.</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p data-i="foot">Leclarbic is the public GitHub name for the Klarblick Next.js app. Source: <a href="https://github.com/Shyam-Gupta-Chiliveri/Leclarbic">github.com/Shyam-Gupta-Chiliveri/Leclarbic</a>.</p>
+    </footer>
+  </div>
+  <script>
+    const copy = {
+      de: {
+        safety: "Kein medizinischer Rat. Nur was im Brief steht — in der EU gerechnet.",
+        kicker: "CGM Challenge · Gesundheitskompetenz",
+        tagline: "Ihr Arztbrief. In Ruhe verstanden.",
+        hero: "Erst verstehen. Dann handeln.",
+        lead: "Patienten-Übersetzer für deutsche Entlassbriefe. Gebaut für den CGM / WHU Innovation Career Hub. Diese GitHub-Pages-Seite ist der öffentliche Schreibtisch. Die interaktive Next.js-App — inklusive <code>/api/analyze</code> — läuft auf Ihrem Rechner.",
+        repo: "Leclarbic-Repository öffnen",
+        run: "Live-Demo lokal starten",
+        pagesNote: "GitHub Pages ist statisch. Es kann keine Node-API und keine TrustedTokens-/OpenAI-Schlüssel hosten. Repository klonen, <code>.env.local</code> lokal anlegen, dann <code>npm run dev</code>.",
+        jury: "Was die Jury sieht",
+        j1t: "Brief öffnen", j1b: "PDF, Foto oder ein CGM-Beispiel.",
+        j2t: "Sorge-Kompass", j2b: "Dringlichkeit der Nachsorge — nicht wie krank jemand ist.",
+        j3t: "FAR", j3b: "Fristen, Aufgaben, und was passiert, wenn Sie warten.",
+        j4t: "Dann der Rest", j4b: "Klartext, Zitate, FAQ, geerdeter Chat. DE / EN.",
+        preview: "Ein ruhiger erster Bildschirm",
+        worryChip: "Bald — kein Notfall",
+        worryTitle: "Soll ich mir Sorgen machen?",
+        worryBody: "Der Kompass beantwortet nur die Dringlichkeit aus dem Brief. Daten, Dosen und Telefonnummern werden kopiert, nie erfunden.",
+        aboutChip: "Ein Satz",
+        aboutTitle: "Worum geht es",
+        aboutBody: "Eine kurze Zeile in einfacher Sprache, dann Fristen · Aufgaben · Risiken — inkl. Widerspruch, wenn der Brief das erlaubt.",
+        who: "Für wen",
+        w1t: "Wer den Brief in der Hand hat",
+        w1b: "Patientin, Partner, Nachbarin, Pflege — auch ohne Fachdeutsch.",
+        w2t: "Kassen nach § 39 SGB V",
+        w2b: "Digitale Nachsorge, ausgespielt aus der CGM-Krankenhaussoftware.",
+        w3t: "Kein Arzt",
+        w3b: "Klarblick erklärt den Brief. Klarblick behandelt nicht. Bei Notfall: Aufnahme oder den Kontakt im Brief.",
+        local: "Klarblick lokal starten",
+        keysTitle: "Schlüssel bleiben lokal",
+        k1: "Niemals .env.local committen.",
+        k2: "TrustedTokens (EU) oder ein anderer OpenAI-kompatibler Endpunkt.",
+        k3: "Dann http://localhost:3000 öffnen.",
+        foot: "Leclarbic ist der öffentliche GitHub-Name der Klarblick-Next.js-App. Quellcode: <a href=\"https://github.com/Shyam-Gupta-Chiliveri/Leclarbic\">github.com/Shyam-Gupta-Chiliveri/Leclarbic</a>."
+      },
+      en: {
+        safety: "No medical advice. Only what the letter says — computed in the EU.",
+        kicker: "CGM Challenge · health literacy",
+        tagline: "Your discharge letter. Understood, calmly.",
+        hero: "Understand first. Then act.",
+        lead: "Patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub. This GitHub Pages site is the public desk. The interactive Next.js app — including <code>/api/analyze</code> — runs on your machine.",
+        repo: "Open the Leclarbic repository",
+        run: "Run the live demo locally",
+        pagesNote: "GitHub Pages is static hosting. It cannot run Node API routes or keep TrustedTokens / OpenAI keys. Clone the repo, add <code>.env.local</code> on your computer, then <code>npm run dev</code>.",
+        jury: "What the jury sees",
+        j1t: "Open the letter", j1b: "PDF, photo, or a CGM sample.",
+        j2t: "Worry compass", j2b: "Follow-up urgency — not how sick someone is.",
+        j3t: "FAR", j3b: "Deadlines, actions, and what happens if you wait.",
+        j4t: "Then the rest", j4b: "Plain summary, quotes, FAQ, grounded chat. DE / EN.",
+        preview: "A calm first screen",
+        worryChip: "Soon — not an emergency",
+        worryTitle: "Should I worry?",
+        worryBody: "The compass answers follow-up urgency from the letter only. Dates, doses and phone numbers are copied, never invented.",
+        aboutChip: "One sentence",
+        aboutTitle: "What the letter is about",
+        aboutBody: "A short plain-language line, then deadlines · actions · risks — including decline/object if the letter allows it.",
+        who: "Who this is for",
+        w1t: "Whoever holds the letter",
+        w1b: "Patient, partner, neighbour, carer — even without medical German.",
+        w2t: "Insurers after § 39 SGB V",
+        w2b: "A digital aftercare service launched from CGM hospital software.",
+        w3t: "Not a doctor",
+        w3b: "Klarblick explains the letter. It does not treat. Emergency: the ER or the contact in the letter.",
+        local: "Run Klarblick locally",
+        keysTitle: "Keys stay on your machine",
+        k1: "Never commit .env.local.",
+        k2: "TrustedTokens (EU) or another OpenAI-compatible endpoint.",
+        k3: "Then open http://localhost:3000.",
+        foot: "Leclarbic is the public GitHub name for the Klarblick Next.js app. Source: <a href=\"https://github.com/Shyam-Gupta-Chiliveri/Leclarbic\">github.com/Shyam-Gupta-Chiliveri/Leclarbic</a>."
+      }
+    };
+
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll("[data-i]").forEach((el) => {
+        const key = el.getAttribute("data-i");
+        const text = copy[lang][key];
+        if (text) el.innerHTML = text;
+      });
+      document.getElementById("de").classList.toggle("on", lang === "de");
+      document.getElementById("en").classList.toggle("on", lang === "en");
+      document.getElementById("de").setAttribute("aria-pressed", String(lang === "de"));
+      document.getElementById("en").setAttribute("aria-pressed", String(lang === "en"));
+      document.title = lang === "de"
+        ? "Klarblick — Ihr Arztbrief. In Ruhe verstanden."
+        : "Klarblick — Your discharge letter. Understood, calmly.";
+    }
+
+    document.getElementById("de").addEventListener("click", () => apply("de"));
+    document.getElementById("en").addEventListener("click", () => apply("en"));
+  </script>
+</body>
+</html>
