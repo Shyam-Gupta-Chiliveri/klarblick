@@ -29,6 +29,8 @@ Anyone holding the letter. Patient, family, neighbour. You do not need medical t
 
 Built for the CGM / WHU Innovation Career Hub challenge.
 
+**Built with** Next.js, TypeScript, and GitHub Pages. Locally, a Next API talks to an OpenAI-compatible LLM. The live site is a static demo — no keys in the browser.
+
 ## Run locally (optional)
 
 Developers: `npm install` then `npm run dev`.
