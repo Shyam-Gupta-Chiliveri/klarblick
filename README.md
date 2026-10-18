@@ -1,15 +1,16 @@
 # Klarblick
 
-Patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub challenge.
+Klarblick (AI Hackathon) — patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub challenge.
 
-Public repository: [Klarblick (AI Hackathon)](https://github.com/Shyam-Gupta-Chiliveri/klarblick)  
+[**Open Klarblick**](http://localhost:3000) · [**Open repository**](https://github.com/Shyam-Gupta-Chiliveri/klarblick)
+
 Public website: [https://shyam-gupta-chiliveri.github.io/klarblick/](https://shyam-gupta-chiliveri.github.io/klarblick/)
 
 **No medical advice.** Every date, dose and phone number must come from the letter. Inference is designed for [TrustedTokens](https://trustedtokens.eu/docs/) in the EU (or another OpenAI-compatible endpoint in `.env.local`).
 
 ## GitHub Pages vs the live app
 
-The Pages site is a static landing. Next.js App Router routes such as `/api/analyze` need Node and cannot run on GitHub Pages. The live LLM demo still needs `npm run dev` locally. Do not put API keys in this repository.
+The Pages site is a static landing. Next.js App Router routes such as `/api/analyze` need Node and cannot run on GitHub Pages. Keep the API key in `.env.local` only. Never commit it, never paste it into GitHub or a public demo.
 
 ## Run
 
@@ -19,9 +20,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-Keep the API key in `.env.local` only. Never commit it, never paste it into GitHub or a public demo.
+Then [**Open Klarblick**](http://localhost:3000).
 
 ## What the jury sees
 
