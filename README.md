@@ -1,24 +1,34 @@
-# Klarblick
+# Klarblick (AI Hackathon)
 
-Klarblick (AI Hackathon) — patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub challenge.
+**Ihr Arztbrief. In Ruhe verstanden.**
 
-[**Open Klarblick**](https://shyam-gupta-chiliveri.github.io/klarblick/) · [**Open repository**](https://github.com/Shyam-Gupta-Chiliveri/klarblick)
+You photograph a German hospital discharge letter. Klarblick turns it into calm next steps — what to do, which medicines the letter names, who to call. It does not give medical advice.
 
-Public website: [https://shyam-gupta-chiliveri.github.io/klarblick/](https://shyam-gupta-chiliveri.github.io/klarblick/)
+## [Open the live app →](https://shyam-gupta-chiliveri.github.io/klarblick/)
 
-**No medical advice.** Every date, dose and phone number must come from the letter.
+No install. Click, pick a sample letter, read.
 
-The public site is a static GitHub Pages app. Anyone can open it on their laptop — no npm, no localhost. The four CGM sample letters (hip short, hip full, cardiology, heart-surgery scan) run from bundled analyses in German and English. There is no API key in the browser. An unknown upload asks you to pick a sample.
+## What you see
 
-## What the jury sees
+- **Worry** — should I be concerned, based only on this letter
+- **Do this** — the next steps and deadlines, most important first
+- **Medicines** — as written, by time of day
+- **The letter** — a plain-language summary beside the original
+- **Questions** — FAQ plus a chat that answers only from the letter
+- **Contacts** — who to call, if the letter names them
 
-1. Upload a letter (or a CGM sample).
-2. **Worry compass** — follow-up urgency, not how sick someone is.
-3. One sentence: what the letter is about.
-4. **FAR** — Fristen, Aufgaben, Risiken (including decline/object if the letter allows it).
-5. Plain-language summary → 1:1 details with original quotes → FAQ → grounded chat.
-6. Accessibility: listen, print, large type, DE/EN.
+## Who it is for
 
-## Business
+Anyone holding the letter. Patient, family, neighbour. You do not need medical training.
 
-Sold to statutory health insurers as a digital Nachsorge service after § 39 SGB V discharge management, launched from CGM hospital software so the letter leaves the ward already understood.
+## How it stays safe
+
+- Dates, doses and phone numbers come only from the letter. If it is not written, Klarblick says so.
+- No medical advice. Klarblick explains the letter. It does not treat.
+- The public site is a static GitHub Pages demo with four CGM sample letters (EU hospital examples). There is no API key in the browser.
+
+Built for the CGM / WHU Innovation Career Hub challenge.
+
+## Run locally (optional)
+
+Developers: `npm install` then `npm run dev`.
