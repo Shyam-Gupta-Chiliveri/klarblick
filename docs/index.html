@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Klarblick — Ihr Arztbrief. In Ruhe verstanden.</title>
-  <meta name="description" content="Klarblick (AI Hackathon): patient-facing translator for German discharge letters. CGM / WHU Innovation Career Hub. No medical advice. Live LLM demo runs locally — GitHub Pages cannot host the Next.js API.">
+  <meta name="description" content="Klarblick (AI Hackathon): patient-facing translator for German discharge letters. CGM / WHU Innovation Career Hub. No medical advice.">
   <link rel="canonical" href="https://shyam-gupta-chiliveri.github.io/klarblick/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Klarblick — Ihr Arztbrief. In Ruhe verstanden.">
@@ -110,6 +110,7 @@
       line-height: 1.05;
     }
     .lead { margin: 0 0 1.2rem; max-width: 46rem; color: var(--muted); }
+    .lead code { white-space: nowrap; }
     .actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
     .btn {
       text-decoration: none;
@@ -215,9 +216,8 @@
         <p class="lead" data-i="lead">Patienten-Übersetzer für deutsche Entlassbriefe. Gebaut für den CGM / WHU Innovation Career Hub. Diese GitHub-Pages-Seite ist der öffentliche Schreibtisch. Die interaktive Next.js-App — inklusive <code>/api/analyze</code> — läuft auf Ihrem Rechner.</p>
         <div class="actions">
           <a class="btn primary" href="https://github.com/Shyam-Gupta-Chiliveri/klarblick" data-i="repo">Klarblick-Repository öffnen</a>
-          <a class="btn ghost" href="#run" data-i="run">Live-Demo lokal starten</a>
+          <a class="btn ghost" href="http://localhost:3000" target="_blank" rel="noopener noreferrer" data-i="openApp">Klarblick öffnen</a>
         </div>
-        <p class="note" data-i="pagesNote">GitHub Pages ist statisch. Es kann keine Node-API und keine TrustedTokens-/OpenAI-Schlüssel hosten. Repository klonen, <code>.env.local</code> lokal anlegen, dann <code>npm run dev</code>.</p>
       </section>
 
       <section>
@@ -255,24 +255,6 @@
         </div>
       </section>
 
-      <section id="run">
-        <h3 data-i="local">Klarblick lokal starten</h3>
-        <div class="far">
-          <pre>git clone https://github.com/Shyam-Gupta-Chiliveri/klarblick.git
-cd klarblick
-cp .env.example .env.local   # paste your own key
-npm install
-npm run dev</pre>
-          <article class="card">
-            <b data-i="keysTitle">Schlüssel bleiben lokal</b>
-            <ol class="steps">
-              <li data-i="k1">Niemals <code>.env.local</code> committen.</li>
-              <li data-i="k2">TrustedTokens (EU) oder ein anderer OpenAI-kompatibler Endpunkt.</li>
-              <li data-i="k3">Dann <code>http://localhost:3000</code> öffnen.</li>
-            </ol>
-          </article>
-        </div>
-      </section>
     </main>
 
     <footer>
@@ -288,8 +270,7 @@ npm run dev</pre>
         hero: "Erst verstehen. Dann handeln.",
         lead: "Patienten-Übersetzer für deutsche Entlassbriefe. Gebaut für den CGM / WHU Innovation Career Hub. Diese GitHub-Pages-Seite ist der öffentliche Schreibtisch. Die interaktive Next.js-App — inklusive <code>/api/analyze</code> — läuft auf Ihrem Rechner.",
         repo: "Klarblick-Repository öffnen",
-        run: "Live-Demo lokal starten",
-        pagesNote: "GitHub Pages ist statisch. Es kann keine Node-API und keine TrustedTokens-/OpenAI-Schlüssel hosten. Repository klonen, <code>.env.local</code> lokal anlegen, dann <code>npm run dev</code>.",
+        openApp: "Klarblick öffnen",
         jury: "Was die Jury sieht",
         j1t: "Brief öffnen", j1b: "PDF, Foto oder ein CGM-Beispiel.",
         j2t: "Sorge-Kompass", j2b: "Dringlichkeit der Nachsorge — nicht wie krank jemand ist.",
@@ -309,11 +290,6 @@ npm run dev</pre>
         w2b: "Digitale Nachsorge, ausgespielt aus der CGM-Krankenhaussoftware.",
         w3t: "Kein Arzt",
         w3b: "Klarblick erklärt den Brief. Klarblick behandelt nicht. Bei Notfall: Aufnahme oder den Kontakt im Brief.",
-        local: "Klarblick lokal starten",
-        keysTitle: "Schlüssel bleiben lokal",
-        k1: "Niemals .env.local committen.",
-        k2: "TrustedTokens (EU) oder ein anderer OpenAI-kompatibler Endpunkt.",
-        k3: "Dann http://localhost:3000 öffnen.",
         foot: "Klarblick (AI Hackathon) — Quellcode: <a href=\"https://github.com/Shyam-Gupta-Chiliveri/klarblick\">github.com/Shyam-Gupta-Chiliveri/klarblick</a>."
       },
       en: {
@@ -323,8 +299,7 @@ npm run dev</pre>
         hero: "Understand first. Then act.",
         lead: "Patient-facing translator for German discharge letters. Built for the CGM / WHU Innovation Career Hub. This GitHub Pages site is the public desk. The interactive Next.js app — including <code>/api/analyze</code> — runs on your machine.",
         repo: "Open the Klarblick repository",
-        run: "Run the live demo locally",
-        pagesNote: "GitHub Pages is static hosting. It cannot run Node API routes or keep TrustedTokens / OpenAI keys. Clone the repo, add <code>.env.local</code> on your computer, then <code>npm run dev</code>.",
+        openApp: "Open Klarblick",
         jury: "What the jury sees",
         j1t: "Open the letter", j1b: "PDF, photo, or a CGM sample.",
         j2t: "Worry compass", j2b: "Follow-up urgency — not how sick someone is.",
@@ -344,11 +319,6 @@ npm run dev</pre>
         w2b: "A digital aftercare service launched from CGM hospital software.",
         w3t: "Not a doctor",
         w3b: "Klarblick explains the letter. It does not treat. Emergency: the ER or the contact in the letter.",
-        local: "Run Klarblick locally",
-        keysTitle: "Keys stay on your machine",
-        k1: "Never commit .env.local.",
-        k2: "TrustedTokens (EU) or another OpenAI-compatible endpoint.",
-        k3: "Then open http://localhost:3000.",
         foot: "Klarblick (AI Hackathon) — source: <a href=\"https://github.com/Shyam-Gupta-Chiliveri/klarblick\">github.com/Shyam-Gupta-Chiliveri/klarblick</a>."
       }
     };
